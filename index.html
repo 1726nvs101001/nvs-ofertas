@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NVS Ofertas</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f4f6f8;
+            --card: #ffffff;
+            --text: #17202a;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --primary: #ff5a1f;
+            --primary-dark: #e64a12;
+            --green: #16a34a;
+            --red: #dc2626;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 18px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand h1 {
+            font-size: 23px;
+        }
+
+        .brand p {
+            color: #9ca3af;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            color: #d1d5db;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            background: #22c55e;
+            border-radius: 50%;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        main {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 24px 18px 50px;
+        }
+
+        .page-title {
+            margin-bottom: 20px;
+        }
+
+        .page-title h2 {
+            font-size: 25px;
+        }
+
+        .page-title p {
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        /* =========================
+           SEARCH / AUTOMATION
+        ========================= */
+
+        .search-panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .search-panel h3 {
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .search-panel p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .search-button {
+            margin-top: 18px;
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 20px;
+            background: var(--primary);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .search-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .search-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .progress {
+            display: none;
+            margin-top: 18px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #f9fafb;
+            border: 1px solid var(--border);
+        }
+
+        .progress.active {
+            display: block;
+        }
+
+        .progress-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .progress-line {
+            margin: 6px 0;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .progress-line.done {
+            color: var(--green);
+        }
+
+        /* =========================
+           DASHBOARD CARDS
+        ========================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .card-title {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           GRID PRINCIPAL
+        ========================= */
+
+        .section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .section-header h3 {
+            font-size: 18px;
+        }
+
+        .section-header span {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* =========================
+           PACK
+        ========================= */
+
+        .pack {
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .pack-header {
+            padding: 16px;
+            background: #fafafa;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pack-name {
+            font-weight: bold;
+        }
+
+        .pack-count {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .pack-copy {
+            border: none;
+            background: #111827;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 9px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .pack-copy:hover {
+            background: #000000;
+        }
+
+        .pack-empty {
+            padding: 35px 20px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        /* =========================
+           SETTINGS
+        ========================= */
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .setting label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .setting input,
+        .setting select {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 11px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .save-settings {
+            margin-top: 17px;
+            border: none;
+            border-radius: 10px;
+            background: #111827;
+            color: white;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* =========================
+           OFFER ITEM
+        ========================= */
+
+        .offer {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .offer:last-child {
+            border-bottom: none;
+        }
+
+        .offer-number {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .offer-name {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .offer-message {
+            white-space: pre-wrap;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .offer-image {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            main {
+                padding: 18px 12px 40px;
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 9px;
+            }
+
+            .card {
+                padding: 14px;
+            }
+
+            .card-value {
+                font-size: 23px;
+            }
+
+            .pack-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .pack-copy {
+                width: 100%;
+            }
+
+            .header-content {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+
+        <div class="brand">
+            <h1>🛍️ NVS Ofertas</h1>
+            <p>Painel de gerenciamento de ofertas</p>
+        </div>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            Sistema online
+        </div>
+
+    </div>
+</header>
+
+<main>
+
+    <div class="page-title">
+        <h2>Dashboard</h2>
+        <p>Controle suas ofertas e pacotes em um só lugar.</p>
+    </div>
+
+
+    <!-- =========================
+         BUSCAR PRODUTOS
+    ========================== -->
+
+    <section class="search-panel">
+
+        <h3>🔎 Buscar produtos</h3>
+
+        <p>
+            Inicie manualmente um novo ciclo de busca.
+            O sistema irá procurar ofertas, aplicar os filtros,
+            gerar as mensagens e montar um novo pacote.
+        </p>
+
+        <button
+            class="search-button"
+            id="searchButton"
+            onclick="startSearch()">
+            🔎 BUSCAR PRODUTOS
+        </button>
+
+        <div class="progress" id="progress">
+
+            <div class="progress-title">
+                Processando ciclo...
+            </div>
+
+            <div class="progress-line" id="step1">
+                ⏳ Aguardando início...
+            </div>
+
+            <div class="progress-line" id="step2"></div>
+            <div class="progress-line" id="step3"></div>
+            <div class="progress-line" id="step4"></div>
+            <div class="progress-line" id="step5"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         DASHBOARD
+    ========================== -->
+
+    <section class="cards">
+
+        <div class="card">
+            <div class="card-title">
+                Ofertas encontradas
+            </div>
+
+            <div
+                class="card-value"
+                id="foundCount">
+                0
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-title">
+                Ofertas prontas
+            </div>
+
+            <div
+                class="card-value"
+                id="readyCount">
+                0
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-title">
+                Produtos no pack
+            </div>
+
+            <div
+                class="card-value"
+                id="packCount">
+                0
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-title">
+                Publicadas
+            </div>
+
+            <div
+                class="card-value"
+                id="publishedCount">
+                0
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PACK ATUAL
+    ========================== -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <div>
+                <h3>📦 Pack atual</h3>
+
+                <span id="packInfo">
+                    Nenhum pack criado ainda.
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="pack">
+
+            <div class="pack-header">
+
+                <div>
+                    <div class="pack-name">
+                        Pack #001
+                    </div>
+
+                    <div
+                        class="pack-count"
+                        id="packHeaderCount">
+                        0 produtos
+                    </div>
+                </div>
+
+                <button
+                    class="pack-copy"
+                    onclick="copyPack()">
+                    📋 COPIAR PACK
+                </button>
+
+            </div>
+
+
+            <div
+                id="offersContainer"
+                class="pack-empty">
+
+                Nenhuma oferta disponível.
+                <br><br>
+                Clique em <b>BUSCAR PRODUTOS</b> para iniciar um ciclo.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CONFIGURAÇÕES
+    ========================== -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <div>
+                <h3>⚙️ Configurações</h3>
+
+                <span>
+                    Defina como os próximos ciclos deverão funcionar.
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="settings-grid">
+
+            <div class="setting">
+
+                <label for="maxProducts">
+                    Quantidade de produtos por pack
+                </label>
+
+                <input
+                    id="maxProducts"
+                    type="number"
+                    min="1"
+                    max="100"
+                    value="5">
+
+            </div>
+
+
+            <div class="setting">
+
+                <label for="minimumDiscount">
+                    Desconto mínimo (%)
+                </label>
+
+                <input
+                    id="minimumDiscount"
+                    type="number"
+                    min="0"
+                    max="100"
+                    value="20">
+
+            </div>
+
+
+            <div class="setting">
+
+                <label for="maximumPrice">
+                    Preço máximo (R$)
+                </label>
+
+                <input
+                    id="maximumPrice"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="500">
+
+            </div>
+
+
+            <div class="setting">
+
+                <label for="avoidDays">
+                    Evitar repetição por (dias)
+                </label>
+
+                <input
+                    id="avoidDays"
+                    type="number"
+                    min="0"
+                    value="30">
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="save-settings"
+            onclick="saveSettings()">
+            💾 SALVAR CONFIGURAÇÕES
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         HISTÓRICO
+    ========================== -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <div>
+                <h3>📜 Histórico</h3>
+
+                <span>
+                    Registro dos ciclos e pacotes gerados.
+                </span>
+            </div>
+
+        </div>
+
+        <div
+            id="history"
+            class="pack-empty">
+
+            Nenhum ciclo realizado ainda.
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    /*
+     * ============================================
+     * NVS OFERTAS
+     * VERSÃO INICIAL DO PAINEL
+     * ============================================
+     *
+     * Nesta etapa:
+     *
+     * - Interface criada
+     * - Configurações criadas
+     * - Botão de busca criado
+     * - Área de packs criada
+     * - Botão copiar criado
+     *
+     * A conexão real com:
+     *
+     * - Supabase
+     * - Shopee
+     * - IA
+     *
+     * será adicionada nas próximas etapas.
+     */
+
+
+    let currentPack = [];
+
+    let packNumber = 1;
+
+
+    /*
+     * ============================================
+     * BUSCAR PRODUTOS
+     * ============================================
+     */
+
+    function startSearch() {
+
+        const button =
+            document.getElementById("searchButton");
+
+        const progress =
+            document.getElementById("progress");
+
+        const amount =
+            parseInt(
+                document.getElementById("maxProducts").value
+            );
+
+
+        if (!amount || amount < 1) {
+
+            alert(
+                "Defina uma quantidade válida de produtos."
+            );
+
+            return;
+        }
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "⏳ PROCESSANDO...";
+
+
+        progress.classList.add("active");
+
+
+        const steps = [
+
+            {
+                id: "step1",
+                text: "🔎 Buscando ofertas..."
+            },
+
+            {
+                id: "step2",
+                text: "🔍 Aplicando filtros..."
+            },
+
+            {
+                id: "step3",
+                text: "♻️ Verificando produtos repetidos..."
+            },
+
+            {
+                id: "step4",
+                text: "🤖 Preparando mensagens..."
+            },
+
+            {
+                id: "step5",
+                text: "📦 Montando pack..."
+            }
+
+        ];
+
+
+        steps.forEach(
+            step => {
+
+                document.getElementById(
+                    step.id
+                ).textContent = "";
+
+            }
+        );
+
+
+        let index = 0;
+
+
+        function nextStep() {
+
+            if (index >= steps.length) {
+
+                finishDemo(amount);
+
+                return;
+            }
+
+
+            const element =
+                document.getElementById(
+                    steps[index].id
+                );
+
+
+            element.textContent =
+                "⏳ " + steps[index].text;
+
+
+            setTimeout(
+                () => {
+
+                    element.textContent =
+                        "✓ " +
+                        steps[index].text.replace(
+                            "⏳ ",
+                            ""
+                        );
+
+
+                    element.classList.add("done");
+
+                    index++;
+
+                    nextStep();
+
+                },
+                600
+            );
+        }
+
+
+        nextStep();
+
+    }
+
+
+    /*
+     * ============================================
+     * FINALIZAÇÃO DA DEMONSTRAÇÃO
+     * ============================================
+     */
+
+    function finishDemo(amount) {
+
+        /*
+         * Ainda não estamos buscando produtos reais.
+         * Por enquanto apenas demonstramos o fluxo.
+         */
+
+        currentPack = [];
+
+
+        for (
+            let i = 1;
+            i <= amount;
+            i++
+        ) {
+
+            currentPack.push({
+
+                name:
+                    "Produto aguardando integração " +
+                    i,
+
+                message:
+                    "🔥 OFERTA ESPECIAL!\n\n" +
+                    "Produto aguardando integração " +
+                    i +
+                    "\n\n" +
+                    "💰 Preço promocional\n" +
+                    "🛒 Link da oferta será adicionado aqui."
+
+            });
+
+        }
+
+
+        updateInterface();
+
+
+        const button =
+            document.getElementById(
+                "searchButton"
+            );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "🔎 BUSCAR PRODUTOS";
+
+
+        document.getElementById(
+            "progress"
+        ).classList.remove("active");
+
+
+        document.getElementById(
+            "foundCount"
+        ).textContent = amount;
+
+
+        document.getElementById(
+            "readyCount"
+        ).textContent = amount;
+
+
+        document.getElementById(
+            "packCount"
+        ).textContent = amount;
+
+
+        document.getElementById(
+            "publishedCount"
+        ).textContent = "0";
+
+
+        document.getElementById(
+            "packInfo"
+        ).textContent =
+            amount +
+            " produtos preparados para o pack.";
+
+
+        document.getElementById(
+            "packHeaderCount"
+        ).textContent =
+            amount +
+            " produtos";
+
+
+        addHistory(
+            amount
+        );
+
+    }
+
+
+    /*
+     * ============================================
+     * ATUALIZAR OFERTAS NA TELA
+     * ============================================
+     */
+
+    function updateInterface() {
+
+        const container =
+            document.getElementById(
+                "offersContainer"
+            );
+
+
+        if (!currentPack.length) {
+
+            container.className =
+                "pack-empty";
+
+            container.innerHTML =
+                "Nenhuma oferta disponível.";
+
+            return;
+        }
+
+
+        container.className = "";
+
+
+        container.innerHTML = "";
+
+
+        currentPack.forEach(
+            (offer, index) => {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className = "offer";
+
+
+                item.innerHTML = `
+
+                    <div class="offer-number">
+                        Oferta ${index + 1}
+                    </div>
+
+                    <div class="offer-name">
+                        ${escapeHtml(offer.name)}
+                    </div>
+
+                    <div class="offer-message">
+                        ${escapeHtml(offer.message)}
+                    </div>
+
+                `;
+
+
+                container.appendChild(item);
+
+            }
+        );
+
+    }
+
+
+    /*
+     * ============================================
+     * COPIAR PACK
+     * ============================================
+     */
+
+    async function copyPack() {
+
+        if (!currentPack.length) {
+
+            alert(
+                "Não existe nenhum pack para copiar."
+            );
+
+            return;
+        }
+
+
+        let text = "";
+
+
+        currentPack.forEach(
+            (offer, index) => {
+
+                text +=
+                    offer.message;
+
+
+                if (
+                    index <
+                    currentPack.length - 1
+                ) {
+
+                    text +=
+                        "\n\n" +
+                        "────────────────" +
+                        "\n\n";
+
+                }
+
+            }
+        );
+
+
+        try {
+
+            await navigator.clipboard.writeText(
+                text
+            );
+
+
+            alert(
+                "✅ Pack copiado para a área de transferência!"
+            );
+
+        }
+
+        catch (error) {
+
+            alert(
+                "Não foi possível copiar automaticamente. " +
+                "Tente novamente pelo navegador."
+            );
+
+        }
+
+    }
+
+
+    /*
+     * ============================================
+     * CONFIGURAÇÕES
+     * ============================================
+     */
+
+    function saveSettings() {
+
+        const settings = {
+
+            maxProducts:
+                document.getElementById(
+                    "maxProducts"
+                ).value,
+
+            minimumDiscount:
+                document.getElementById(
+                    "minimumDiscount"
+                ).value,
+
+            maximumPrice:
+                document.getElementById(
+                    "maximumPrice"
+                ).value,
+
+            avoidDays:
+                document.getElementById(
+                    "avoidDays"
+                ).value
+
+        };
+
+
+        localStorage.setItem(
+            "nvs_ofertas_settings",
+            JSON.stringify(settings)
+        );
+
+
+        alert(
+            "✅ Configurações salvas."
+        );
+
+    }
+
+
+    function loadSettings() {
+
+        const saved =
+            localStorage.getItem(
+                "nvs_ofertas_settings"
+            );
+
+
+        if (!saved) return;
+
+
+        try {
+
+            const settings =
+                JSON.parse(saved);
+
+
+            document.getElementById(
+                "maxProducts"
+            ).value =
+                settings.maxProducts;
+
+
+            document.getElementById(
+                "minimumDiscount"
+            ).value =
+                settings.minimumDiscount;
+
+
+            document.getElementById(
+                "maximumPrice"
+            ).value =
+                settings.maximumPrice;
+
+
+            document.getElementById(
+                "avoidDays"
+            ).value =
+                settings.avoidDays;
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Erro ao carregar configurações:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /*
+     * ============================================
+     * HISTÓRICO
+     * ============================================
+     */
+
+    function addHistory(amount) {
+
+        const history =
+            document.getElementById(
+                "history"
+            );
+
+
+        const now =
+            new Date();
+
+
+        const date =
+            now.toLocaleString(
+                "pt-BR"
+            );
+
+
+        const item =
+            document.createElement(
+                "div"
+            );
+
+
+        item.style.padding =
+            "12px 0";
+
+        item.style.borderBottom =
+            "1px solid #e5e7eb";
+
+
+        item.innerHTML = `
+            <strong>Pack #${packNumber}</strong>
+            <br>
+            <span style="color:#6b7280;font-size:13px;">
+                ${amount} produtos preparados —
+                ${date}
+            </span>
+        `;
+
+
+        history.innerHTML = "";
+
+
+        history.appendChild(
+            item
+        );
+
+
+        packNumber++;
+
+    }
+
+
+    /*
+     * ============================================
+     * SEGURANÇA BÁSICA DE HTML
+     * ============================================
+     */
+
+    function escapeHtml(text) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.textContent =
+            text;
+
+
+        return div.innerHTML;
+
+    }
+
+
+    /*
+     * ============================================
+     * INICIALIZAÇÃO
+     * ============================================
+     */
+
+    loadSettings();
+
+</script>
+
+</body>
+</html>
